@@ -1,0 +1,68 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		   xmlns:h="http://java.sun.com/jsf/html"
+		   xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+		   xmlns:f="http://java.sun.com/jsf/core"
+		    template="./../../WEB-INF/abstracts/tplAdmin2.xhtml">
+<ui:define name="cph_Title">New Venue</ui:define>
+
+<ui:define name="cph_Heading">#{empty request.getParameter("department_id")? 'Create': 'Update'} Department</ui:define>
+
+<ui:define name="cph_Content">
+<h:form id="x0">
+    <f:metadata>
+	<f:viewParam name="department_id" value="#{controllerProcessDepartment.department_id}" />
+	<f:viewAction action="#{controllerProcessDepartment.pre_load}" />
+    </f:metadata>
+<table id="tblx">
+<tbody>
+    <tr><td style="border-top:1px solid #bbb;"></td></tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Name</span> <span class="red">*</span><br />
+	     <h:inputText id="txtName" title="Enter Name" p:placeholder="Enter Name" maxlength="155" alt="1" value="#{controllerProcessDepartment.strName}" />
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Description</span> <span class="red">*</span><br />
+		<h:inputTextarea p:placeholder="Enter Description" id="txtDescription" style="width:300px;height:400px;" value="#{controllerProcessDepartment.strDescription}"></h:inputTextarea>
+	    </label>
+	</td>
+    </tr>
+    <tr><td style="border-bottom:1px solid #bbb;"></td></tr>
+    <tr><input name="frmChk" type="hidden" value="0" />
+	<td style="color:#bbb;">
+	    <h:commandButton action="#{controllerProcessDepartment.manipulateDepartment()}" value="save" style="margin-left:0;padding-left:0;" /> | <input type="reset" id="reset" value="clear" />
+	</td>
+    </tr>
+</tbody>
+</table>
+</h:form>  
+</ui:define>
+
+<ui:define name="cph_PostLoadScripts">
+<h:outputScript>//<![CDATA[
+var x=document.forms[0];
+try{fncFrmLoad(x);
+    var validate=function(x){
+	var t=fncValidateFrm(x);
+	    if(t){
+		
+	    }
+	    return t;
+	};
+    x.onsubmit=function(){
+	var t=validate(this);
+	if(!t) return false;
+	//if(t) x.submit();
+	//return false;
+    };
+}catch(e){alert(e);}
+$(document).ready(function(){
+   
+});
+//]]></h:outputScript>
+</ui:define>
+</ui:composition>
+

@@ -1,0 +1,94 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		   xmlns:h="http://java.sun.com/jsf/html"
+		   xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+		   xmlns:f="http://java.sun.com/jsf/core"
+		    template="./../../WEB-INF/abstracts/tplSuperAdmin3.xhtml">
+<ui:define name="cph_Title">Update Student Remark</ui:define>
+
+<ui:define name="cph_Heading">Update Student Note</ui:define>
+
+<ui:define name="cph_Content">
+<h:form id="x0">
+     <f:metadata>
+	 <f:viewParam name="student_id" value="#{controllerProcessUsers.student_id}" />
+	<f:viewAction action="#{controllerProcessUsers.pre_load}" />
+    </f:metadata>
+<table id="tblx">
+<tbody>
+    <tr><td style="border-top:1px solid #bbb;"></td></tr>
+    <tr>
+	<td><label>
+	    <span class="bold">First Name</span><br />
+	    <h:outputText id="txtFName" value="#{controllerProcessUsers.strFName} #{controllerProcessUsers.strLName} (#{controllerProcessUsers.strUsername})" />
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Email ID</span><br />
+	    <h:outputLink target="_blank" id="txtEmail" value="mailto:#{controllerProcessUsers.strEmail}">#{controllerProcessUsers.strEmail}</h:outputLink>
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Gender</span><br />
+	    <h:outputText id="chrGender" value="#{controllerProcessUsers.chrGender}" />
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Phone Number</span><br />
+	    <h:outputText id="txtPhone" value="#{controllerProcessUsers.intPhone}" />
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Special</span><br />
+	    <h:inputTextarea p:placeholder="Enter Remarks" id="txtComment" value="#{controllerProcessUsers.strEditSpecial}"></h:inputTextarea>
+	    </label>
+	</td>
+    </tr>
+    <tr><td style="border-bottom:1px solid #bbb;"></td></tr>
+    <tr><input name="frmChk" type="hidden" value="0" />
+	<td style="color:#bbb;">
+	    <h:commandButton action="#{controllerProcessUsers.updateRemark()}" value="update" style="margin-left:0;padding-left:0;" /> | <input type="reset" id="reset" value="clear" />
+	</td>
+    </tr>
+</tbody>
+</table>
+</h:form>  
+</ui:define>
+
+<ui:define name="cph_PostLoadScripts">
+<h:outputScript>//<![CDATA[
+var x=document.forms[0];
+try{fncFrmLoad(x);
+    var validate=function(x){
+	var t=fncValidateFrm(x);
+	    if(t){
+		if($(document.getElementById('x0:txtNewPassword')).val()!=$(document.getElementById('x0:txtNewPasswordConfirm')).val()){
+		    $(document.getElementById('x0:txtNewPasswordConfirm')).focus();
+		    $(document.getElementById('x0:txtNewPasswordConfirm')).addClass('redline');
+		    $('div#msgBox').text('New Passwords must match.');
+		    t=false;
+		}else $(document.getElementById('x0:txtNewPasswordConfirm')).removeClass('redline');
+	    }
+	    return t;
+	};
+    x.onsubmit=function(){
+	var t=validate(this);
+	if(!t) return false;
+	//if(t) x.submit();
+	//return false;
+    };
+}catch(e){alert(e);}
+$(document).ready(function(){
+   if($(document.getElementById('x0:txtFName')).text().length==4) window.location='Welcome.xhtml?msg=The_system_could_not_find_the_Student.';
+});
+//]]></h:outputScript>
+</ui:define>
+</ui:composition>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+    <persistence-unit name="abhimaniPU" transaction-type="JTA">
+	<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+	<jta-data-source>jdbc/itmd4515DS</jta-data-source>
+	<class>edu.iit.sat.itmd4515.abhimani.fp.domain.relations.Comment</class>
+	<class>edu.iit.sat.itmd4515.abhimani.fp.domain.relations.DepartmentOffice</class>
+	<class>edu.iit.sat.itmd4515.abhimani.fp.domain.entities.Department</class>
+	<class>edu.iit.sat.itmd4515.abhimani.fp.domain.entities.Student</class>
+	<class>edu.iit.sat.itmd4515.abhimani.fp.domain.entities.Venue</class>
+	<class>edu.iit.sat.itmd4515.abhimani.fp.domain.entities.Event</class>
+	<class>edu.iit.sat.itmd4515.abhimani.fp.domain.authorization.Role</class>
+	<class>edu.iit.sat.itmd4515.abhimani.fp.domain.authorization.StudentLogin</class>
+	<class>edu.iit.sat.itmd4515.abhimani.fp.domain.authorization.Authentication</class>
+	<exclude-unlisted-classes>true</exclude-unlisted-classes>
+	<validation-mode>NONE</validation-mode>
+	<properties>
+	    <property name="javax.persistence.schema-generation.database.action" value="create"/>
+	    <property name="javax.persistence.schema-generation.scripts.action" value="create"/>
+	    <property name="javax.persistence.schema-generation.scripts.create-target" value="create.sql"/>
+	    <property name="javax.persistence.schema-generation.scripts.drop-target" value="drop.sql"/>
+	    <property name="javax.persistence.sql-load-script-source" value="preload.sql"/>
+	    <property name="eclipselink.logging.timestamp" value="true"/>
+	    <property name="eclipselink.logging.exceptions" value="true"/>
+	    <property name="eclipselink.logging.level" value="OFF"/>
+	    <property name="eclipselink.logging.level.sql" value="OFF"/>
+	    <property name="eclipselink.cache.type.default" value="NONE"/>
+	</properties>
+    </persistence-unit>
+</persistence>

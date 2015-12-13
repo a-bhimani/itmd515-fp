@@ -1,0 +1,149 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		    xmlns:h="http://java.sun.com/jsf/html"
+		    xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+		    xmlns:f="http://java.sun.com/jsf/core"
+		    xmlns:o="http://omnifaces.org/ui"
+		    xmlns:of="http://omnifaces.org/functions"
+		    template="./../WEB-INF/abstracts/tplStudents2.xhtml">
+<ui:define name="cph_Title">Event - #{controllerEventData.currentEvent.title}</ui:define>
+
+
+<ui:define name="cph_Heading"><span id="lblHeading">#{controllerEventData.currentEvent.title}</span></ui:define>
+
+
+<ui:define name="cph_Content">
+<h:form id="x0">
+    <f:metadata>
+	<f:viewParam name="event_id" value="#{controllerEventData.event_id}" />
+	<f:viewAction action="#{controllerEventData.pre_load}" />
+    </f:metadata>
+<table id="tblx">
+<tbody>
+    <tr><td style="border-top:1px solid #bbb;">#{event_id}</td></tr>
+    <tr>
+	<td><h:outputLink value="Events.xhtml">&#8678; Back to Events</h:outputLink>
+	</td>
+    </tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Description</span><br />
+	    <h:outputText value="#{empty controllerEventData.currentEvent.description? '-': controllerEventData.currentEvent.description}"></h:outputText>
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Date Posted</span><br />
+	    <h:outputText value="#{controllerEventData.currentEvent.CDate}"></h:outputText>
+	    </label>
+	</td>
+    </tr>
+      <tr>
+	<td><label>
+	    <span class="bold">Begin Date/Time</span><br />
+	    <h:outputText value="#{controllerEventData.currentEvent.EBegin}"></h:outputText>
+	    </label>
+	</td>
+    </tr>
+     <tr>
+	<td><label>
+	    <span class="bold">End Date/Time</span><br />
+	    <h:outputText value="#{controllerEventData.currentEvent.EEnd}"></h:outputText>
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Venue</span><br />
+	    <h:outputLabel value="#{controllerEventData.currentEvent.venue.title}">,</h:outputLabel>
+	    <h:outputLabel value="#{controllerEventData.currentEvent.venue.addr1}">,</h:outputLabel>
+	    <h:outputLabel rendered="#{not empty controllerEventData.currentEvent.venue.addr2}" value="#{controllerEventData.currentEvent.venue.addr2}">,</h:outputLabel>
+	    <h:outputLabel value="#{controllerEventData.currentEvent.venue.city}, #{controllerEventData.currentEvent.venue.CState}">,</h:outputLabel>
+	    <h:outputLabel value="#{controllerEventData.currentEvent.venue.zip}">.</h:outputLabel>
+	    </label>
+	</td>
+    </tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Students attending the Event</span><br />
+	    <ui:repeat value="#{controllerEventData.currentEvent.studentList}" var="student">
+		<span>#{student.FName} #{student.FName} (#{student.auth.username})</span><br />
+	    </ui:repeat>
+	    <span class="bold">Total</span><h:outputText value=" #{controllerEventData.currentEvent.studentList.size()}"></h:outputText>
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Are you attending?</span><br />
+	    <h:selectBooleanCheckbox accesskey="#{controllerEventData.currentEvent.PID}" disabled="#{not controllerEventData.isNotPast}" id='chkIsGoing' value="#{controllerEventData.isAttendingEvent}"></h:selectBooleanCheckbox> <h:outputLabel style="display:inline;" class="red" rendered="#{not controllerEventData.isNotPast}"> This event is alreay past.</h:outputLabel>
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><h:outputLink value="Events.xhtml">&#8678; Back to Events</h:outputLink>
+	</td>
+    </tr>
+    <tr><td style="border-bottom:1px solid #bbb;"></td></tr>
+    <tr><td><br /></td></tr>
+    <tr><td style="border-bottom:1px solid #bbb;"></td></tr>
+    <tr>
+    <td style="border-bottom:1px solid #bbb;">
+	<span class="bold">Comments</span>
+    </td>
+    </tr>
+    <tr><td>
+	     <ui:repeat value="#{controllerEventData.currentEvent.comments}" var="comment">
+		 <span class="bold">#{comment.student.FName}</span> <span>#{comment.comment}</span><br />
+	    </ui:repeat>
+	</td></tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Comment</span> <span class="red">*</span><br />
+	    <h:inputTextarea p:placeholder="Enter Comment" id="txtComment" value="#{controllerEventData.newComment}"></h:inputTextarea>
+	    </label>
+	</td>
+    </tr>
+    <tr><td style="color:#bbb;">
+	    <h:commandButton id='btnComment' action="#{controllerEventData.addComment()}" value="post" style="margin-left:0;padding-left:0;" />
+	</td>
+    </tr>
+</tbody>
+</table>
+</h:form> 
+</ui:define>
+
+<ui:define name="cph_PostLoadScripts">
+<h:outputScript>//<![CDATA[
+var x=document.forms[0];
+try{fncFrmLoad(x);
+    var validate=function(x){
+	var t=true;
+	    if(t){
+		var y=$(document.getElementById('x0:txtComment'));
+		if((y.val()).length<2){
+		    y.focus();
+		    y.addClass('redline');
+		    t=false;
+		}else y.removeClass('redline');
+	    }
+	    return t;
+	};
+    (document.getElementById('x0:btnComment')).onclick=function(){
+	var t=validate(this);
+	if(!t) return false;
+	//if(t) x.submit();
+	//return false;
+    };
+}catch(e){alert(e);}
+$(document).ready(function(){
+			if($(document.getElementById('lblHeading')).text()=='') window.location='Events.xhtml?msg=The_system_could_not_find_the_event.';
+			
+			$(document.getElementById('x0:chkIsGoing')).change(function(){
+									$.get('ajax/register_for_event?id='+ $(this).attr('accesskey'));
+									    });
+		    });
+//]]></h:outputScript>
+</ui:define>
+</ui:composition>
+

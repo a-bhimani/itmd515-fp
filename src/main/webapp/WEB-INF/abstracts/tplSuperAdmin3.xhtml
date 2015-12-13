@@ -1,0 +1,21 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		    xmlns:h="http://java.sun.com/jsf/html"
+		    template="tplAdmin2.xhtml">
+<ui:define name="cph_Title"><ui:insert name="cph_Title">Welcome</ui:insert></ui:define>
+
+<ui:define name="cph_PageStyles"><ui:insert name="cph_PageStyles"></ui:insert></ui:define>
+
+<ui:define name="cph_MenuItems">
+<li><a href="/Administrators/Departments" class="spread">Departments</a></li>
+<li><a href="/Administrators/Venues" class="spread">Venues</a></li>
+<li class="logon"><span class="bold"><h:outputText value="#{request.getRemoteUser()}" /></span> <a href="/Administrators/Logout" style="border-left:2px solid #ccc !important;padding-left:8px;">logout</a></li>
+<li style="border-top:3px solid #F3722A;"></li>
+</ui:define>
+
+<ui:define name="cph_Heading"><ui:insert name="cph_Heading">Dashboard</ui:insert></ui:define>
+
+<ui:define name="cph_Content"><ui:insert name="cph_Content"></ui:insert></ui:define>
+
+<ui:define name="cph_PostLoadScripts"><ui:insert name="cph_PostLoadScripts"></ui:insert></ui:define>
+</ui:composition>
+

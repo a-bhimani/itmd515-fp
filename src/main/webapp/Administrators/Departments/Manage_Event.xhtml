@@ -1,0 +1,160 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		   xmlns:h="http://java.sun.com/jsf/html"
+		   xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+		   xmlns:f="http://java.sun.com/jsf/core"
+		    template="./../../WEB-INF/abstracts/tplAdmin2.xhtml">
+<ui:define name="cph_Title">New Venue</ui:define>
+
+<ui:define name="cph_PageStyles">
+<link type="text/css" rel="stylesheet" media="all" href="/res/styles.jquery.ui.all.css" />
+<style type="text/css" media="all">
+select.ui-datepicker-month,
+select.ui-datepicker-year{width:156px !important;}
+.ui-widget{font-size:0.82em;}
+.ui-state-default,
+.ui-datepicker .ui-datepicker-title select{font-size:0.9em;}
+ui-datepicker-next,
+a.ui-datepicker-prev,
+a.ui-corner-all{border:0 none !important;}
+</style>
+</ui:define>
+
+<ui:define name="cph_Heading">#{empty request.getParameter("event_id")? 'Create': 'Update'} Event</ui:define>
+
+<ui:define name="cph_Content">
+<h:form id="x0">
+    <f:metadata>
+	<f:viewParam name="event_id" value="#{controllerProcessEvent.event_id}" />
+	<f:viewAction action="#{controllerProcessEvent.pre_load}" />
+    </f:metadata>
+<table id="tblx">
+<tbody>
+    <tr><td style="border-top:1px solid #bbb;"></td></tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Title</span> <span class="red">*</span><br />
+	     <h:inputText id="txtTitle" title="Enter Title" p:placeholder="Enter Title" maxlength="155" alt="1" value="#{controllerProcessEvent.strTitle}" />
+	    </label>
+	</td>
+    </tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Department</span> <span class="red">*</span><br />
+	    <h:selectOneMenu title="Select Department" p:placeholder="Select Department" id="ddlDepartment" value="#{controllerProcessEvent.intDepartment_Id}">
+		<f:selectItems value="#{controllerProcessEvent.lstDepartments}" var="department" itemValue="#{department.PID}" itemLabel="#{department.name}" />
+	    </h:selectOneMenu >
+	    </label>
+	</td>
+    </tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Venue</span> <span class="red">*</span><br />
+	     <h:selectOneMenu title="Select Venue" p:placeholder="Select Venue" id="ddlVenue" value="#{controllerProcessEvent.intVenue_Id}">
+		 <f:selectItems value="#{controllerProcessEvent.lstVenues}" var="venue" itemValue="#{venue.PID}" itemLabel="#{venue.title}" />
+	    </h:selectOneMenu >
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Begin Date</span> <span class="red">*</span><br />
+	     <h:inputText id="txtEBegin" class="datebox xdate" title="Enter Begin Date" p:placeholder="Enter Begin Date" alt="1" value="#{controllerProcessEvent.strBeginDate}" /><br />
+	     <h:inputText style="width:22px;" id="txtEBeginHrs" title="Enter Begin Hours" p:placeholder="HH" maxlength="2" alt="2" value="#{controllerProcessEvent.strBeginDateHrs}" /> : 
+	     <h:inputText style="width:22px;" id="txtEBeginMins" title="Enter Begin Minutes" p:placeholder="MM" maxlength="2" alt="2" value="#{controllerProcessEvent.strBeginDateMins}" />
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">End Date</span> <span class="red">*</span><br />
+	     <h:inputText id="txtEEnd" class="datebox xdate" title="Enter End Date" p:placeholder="Enter End Date" alt="1" value="#{controllerProcessEvent.strEndDate}" /><br />
+	     <h:inputText style="width:22px;s" id="txtEEndHrs" title="Enter End Hours" p:placeholder="HH" maxlength="2" alt="2" value="#{controllerProcessEvent.strEndDateHrs}" /> : 
+	     <h:inputText style="width:22px;" id="txtEEndMins" title="Enter End Minutes" p:placeholder="MM" maxlength="2" alt="2" value="#{controllerProcessEvent.strEndDateMins}" />
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Description</span> <span class="red">*</span><br />
+		<h:inputTextarea p:placeholder="Enter Description" id="txtDescription" style="width:242px;height:400px;" value="#{controllerProcessEvent.strDescription}"></h:inputTextarea>
+	    </label>
+	</td>
+    </tr>
+    <tr><td style="border-bottom:1px solid #bbb;"></td></tr>
+    <tr><input name="frmChk" type="hidden" value="0" />
+	<td style="color:#bbb;">
+	    <h:commandButton action="#{controllerProcessEvent.manipulateEvent()}" value="save" style="margin-left:0;padding-left:0;" /> | <input type="reset" id="reset" value="clear" />
+	</td>
+    </tr>
+</tbody>
+</table>
+</h:form>  
+</ui:define>
+
+<ui:define name="cph_PostLoadScripts">
+<script type="text/javascript" language="javascript" src="/res/js.lib.jquery-ui.min.js"></script>
+<h:outputScript>//<![CDATA[
+window.addLoadEvent(function() {
+    $("body").on("focusin", "input.datebox:text", function() {
+		if(!($(this).val())){
+		    var toDate=(new Date());
+		   $(this).is(":data(datepicker)") || $(this).datepicker();
+		   $(this).val((toDate.getMonth()+1) +'-'+ toDate.getDate() +'-'+ toDate.getFullYear());
+		}
+    });
+    $("input.datebox:text").focusin();
+});
+
+var x=document.forms[0];
+try{fncFrmLoad(x);
+    var validate=function(x){
+	var t=fncValidateFrm(x);
+	    if(t){
+		
+	    }
+	    return t;
+	};
+    x.onsubmit=function(){
+	var t=validate(this);
+	if(!t) return false;
+	//if(t) x.submit();
+	//return false;
+    };
+}catch(e){alert(e);}
+$(document).ready(function(){
+    try {
+        $.datepicker.setDefaults({
+            changeMonth: !0,
+            changeYear: !0,
+            minDate: "-100Y",
+            maxDate: "+5y",
+            dateFormat: "mm-dd-yy",
+            yearRange: "-65:+15",
+            showAnim: "fadeIn",
+            onSelect: function(a) {
+                $(this).attr("onchange") && eval($(this).attr("onchange"));
+					 document.cookie=("currDate="+ $(this).val());
+            }
+        }), $("body").on("focusin", "input.datebox:text", function() {
+            $(this).is(":data(datepicker)") || ($(this).attr("readonly", !0), $(this).datepicker(), $(this).hasClass("bdate") && ($(this).datepicker("destroy"), $(this).datepicker({
+                maxDate: "-18Y",
+                yearRange: "-65:-18"
+            }), $(this).datepicker("refresh")), $(this).hasClass("xdate") && ($(this).datepicker("destroy"), $(this).datepicker({
+                maxDate: "+15Y",
+                yearRange: "-15:+15"
+            }), $(this).datepicker("refresh")));
+			var toDate=(new Date());
+			var prevDate=getCookie('currDate');
+			if(prevDate != null && prevDate != ''){
+				$(this).val(getCookie('currDate'));
+			}else{
+				//$(this).is(":data(datepicker)") || $(this).datepicker();
+				$(this).val((toDate.getMonth()+1) +'-'+ toDate.getDate() +'-'+ toDate.getFullYear());
+			}
+        }), $("input.datebox").attr("readonly", !0);
+    } catch (ex) {};
+});
+//]]></h:outputScript>
+</ui:define>
+</ui:composition>
+

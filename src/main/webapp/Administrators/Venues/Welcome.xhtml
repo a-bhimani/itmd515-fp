@@ -1,0 +1,108 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		    xmlns:h="http://java.sun.com/jsf/html"
+		    template="./../../WEB-INF/abstracts/tplAdmin2.xhtml">
+<ui:define name="cph_Title">Welcome</ui:define>
+
+
+<ui:define name="cph_PageStyles">
+<style type="text/css" media="all">
+ul.event_tab.menu{width:29%;}
+</style>
+</ui:define>
+
+
+<ui:define name="cph_Heading">Dashboard</ui:define>
+
+
+<ui:define name="cph_Content">
+<ul id="updateList1" class="event_tab menu nav">
+<li class="heading">Venues</li>
+<ui:repeat value="#{controllerFetchVenues.lstVenues}" var="venue">
+<li>
+    <span class="attribute">
+	<a title="Edit" href="Manage_Venue.xhtml?venue_id=#{venue.ID}" class="title">#{venue.title}</a>
+	<a title="Edit" href="Manage_Venue.xhtml?venue_id=#{venue.ID}" class="action right text-right"><img style="cursor:pointer;border:0 none;" src="/res/img.icon.edit.png" title="Edit" alt="edit" /></a>
+    </span>
+    <span class="attribute"><span class="bold">Address : </span> 
+	<h:outputLabel value="#{venue.addr1}">,</h:outputLabel>
+	<h:outputLabel rendered="#{not empty venue.addr2}" value="#{venue.addr2}">,</h:outputLabel>
+	<h:outputLabel value="#{venue.city}, #{venue.CState}">,</h:outputLabel>
+	<h:outputLabel value="#{venue.zip}">.</h:outputLabel>
+    </span>
+    <span class="attribute"><span class="bold">No of Events at the Venue : </span> <h:outputText value="#{venue.venueEvents.size()}"/></span>
+</li>
+</ui:repeat>
+<li></li>
+<li class="right"><a href="Manage_Venue.xhtml">Add New</a></li>
+</ul>
+
+<ul id="updateList2" class="event_tab menu nav">
+<li class="heading">Events Pending Approval</li>
+<ui:repeat value="#{controllerFetchVenues.lstPendingEvents}" var="event">
+<li>
+    <span class="attribute">
+	<a href="#" class="title">#{event.title}</a>
+	<h:outputText value="#{event.description}"/>
+    </span>
+    <span class="attribute"><span class="bold">Begin : </span> <h:outputText value="#{event.EBegin}"/></span>
+    <span class="attribute"><span class="bold">End : </span> <h:outputText value="#{event.EEnd}"/></span>
+    <span class="attribute"><span class="bold">Held by : </span> <h:outputText value="#{event.department.name}"/></span>
+    <span class="attribute"><span class="bold">Held at : </span> <h:outputText value="#{event.venue.title}"/></span>
+    <span class="attribute">
+    <span class="bold">Total</span><h:outputText value=" #{event.studentList.size()}"></h:outputText>
+    </span>
+    <span class="attribute"><span class="bold">Approve? : </span> <h:selectBooleanCheckbox accesskey="#{event.PID}" class='chkIsApproved' value="false"></h:selectBooleanCheckbox></span>
+</li>
+</ui:repeat>
+</ul>
+    
+<ul id="updateList3" class="event_tab menu nav">
+<li class="heading">Events Approved</li>
+<ui:repeat value="#{controllerFetchVenues.lstActiveEvents}" var="event">
+<li>
+    <span class="attribute">
+	<a href="#" class="title">#{event.title}</a>
+	<h:outputText value="#{event.description}"/>
+    </span>
+    <span class="attribute"><span class="bold">Begin : </span> <h:outputText value="#{event.EBegin}"/></span>
+    <span class="attribute"><span class="bold">End : </span> <h:outputText value="#{event.EEnd}"/></span>
+    <span class="attribute"><span class="bold">Held by : </span> <h:outputText value="#{event.department.name}"/></span>
+    <span class="attribute"><span class="bold">Held at : </span> <h:outputText value="#{event.venue.title}"/></span>
+    <span class="attribute">
+    <span class="bold">Students attending the Event : </span><br />
+    <ui:repeat value="#{event.studentList}" var="student">
+	<span>#{student.FName} #{student.FName} (#{student.auth.username})</span><br />
+    </ui:repeat>
+    <span class="bold">Total</span><h:outputText value=" #{event.studentList.size()}"></h:outputText>
+    </span>
+    <span class="attribute"><span class="bold">No. of Comments : </span> <h:outputText value="#{event.comments.size()}"/></span>
+</li>
+</ui:repeat>
+</ul>
+</ui:define>
+
+<ui:define name="cph_PostLoadScripts">
+<h:outputScript>//<![CDATA[
+$(document).ready(function(){
+var refreshPanels=function(){
+	$('ul.event_tab.menu').each(function(){
+	     $(this).show(0);
+	     if($(this).children('li').length==1) $(this).hide(0);
+	});
+    }
+    $(document).on('click', 'input.chkIsApproved', function(){
+			    $.get('ajax/approve_event?id='+ $(this).attr('accesskey'), function(){
+								$('ul#updateList2').load('Welcome.xhtml #updateList2 li',
+								    function(){
+									$('ul#updateList3').load('Welcome.xhtml #updateList3 li', function(){
+									    refreshPanels();
+									    });
+									});
+							});
+				});
+	    refreshPanels();
+	});
+//]]></h:outputScript>
+</ui:define>
+</ui:composition>
+

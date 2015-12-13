@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      lang="en-GB">
+<head>
+<title>Student Event Portal :: <ui:insert name="cph_Title">Index</ui:insert></title>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="author" content="Ankit Bhimani" />
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="icon" type="image/x-icon" href="/res/img.favicon.ico" />
+<link type="text/css" rel="stylesheet" media="all" href="/res/styles.generics.css" />
+<link type="text/css" rel="stylesheet" media="all" href="/res/styles.EventPortalApp.css" />
+<ui:insert name="cph_PageStyles"></ui:insert>
+</head>
+<body>
+<div id="wrapper_menu" class="wrap_menu nojs quattro">
+<div id="menu_toggler"></div>
+<ul id="menu" class="menu nav">
+    <li class="active double">
+	<h:outputLink class="spread" rendered="#{empty request.getRemoteUser()}" value="/">Students</h:outputLink>
+	<h:outputLink class="spread" style="margin:18px 0 8px 0;" rendered="#{empty request.getRemoteUser()}" value="/Administrators/">Administrators</h:outputLink>
+	<h:outputLink class="spread" rendered="#{not empty request.getRemoteUser() and request.isUserInRole('STUDENT')}" value="/Students/Events.xhtml">Events</h:outputLink>
+	<h:outputLink class="spread" rendered="#{not empty request.getRemoteUser() and request.isUserInRole('SUPER_ADMIN')}" value="/Administrators/Users/Welcome.xhtml">Main</h:outputLink>
+	<h:outputLink class="spread" rendered="#{not empty request.getRemoteUser() and request.isUserInRole('DEPT_ADMIN')}" value="/Administrators/Departments/Welcome.xhtml">Dashboard</h:outputLink>
+	<h:outputLink class="spread" rendered="#{not empty request.getRemoteUser() and request.isUserInRole('VENUE_ADMIN')}" value="/Administrators/Venues/Welcome.xhtml">Dashboard</h:outputLink>	
+    </li>
+    <ui:insert name="cph_MenuItems"></ui:insert>
+    <li><a href="/Pages/About.xhtml" class="spread">About</a></li>
+    <li><a href="/Pages/Documentation.xhtml" class="spread">Documentation</a></li>
+    <li><a href="/Pages/Repository.xhtml" class="spread">Download</a></li>
+</ul>
+</div>
+<div id="wrapper_main" data-role="page">
+    <div id="wrap_head" data-role="header">
+    <div id="right_wrap">
+	<div layout="block" id="msgBox" class="red">#{request.queryString.replaceAll("msg=", "")}</div>
+    </div>
+    </div>
+    <div id="wrap_content" data-role="content">
+	<h2 class="heading"><ui:insert name="cph_Heading">Index</ui:insert></h2>
+	<ui:insert name="cph_Content"></ui:insert>
+    </div>
+</div>
+<script type="text/javascript" src="/res/js.lib.jquery.min.js"></script>
+<script type="text/javascript" src="/res/js.lib.validations.js"></script>
+<script type="text/javascript">//<![CDATA[
+var getIE=(window.getIE||{});getIE=function(){var f=-1;if(navigator.appName=="Microsoft Internet Explorer"){var e=navigator.userAgent;var d=new RegExp("MSIE ([0-9]{1,}[.0-9]{0,})");f=(d.exec(e))?parseFloat(RegExp.$1):f}f=parseInt(f);this.getVer=function(){return f};this.checkVer=function(a){if(f>0&&f==a){return true}return false};this.lowVer=function(a){if(f>0&&f<=a){return true}return false};return f};var isIE=new getIE();var mdd_open=function(b){window.location=b};var mdd_popup=function(b){window.open(b,"Untitled","status=1, toolbar=0, location=0, menubar=0, resizable=0, width="+screen.width+", height="+screen.height+", scrollbars=1")};var getParameterByName=function(a,c){try{var d=(RegExp("[?&]"+a.replace(/[\[]/,"\\[").replace(/[\]]/,"\\]")+"=([^&]*)").exec(c?("?"+c):window.location.search));return(d&&decodeURIComponent(d[1].replace(/\+/g," ")))}catch(b){}};var preload=function(b){$(b).each(function(){(new Image()).src="/res/img."+this})};var HAS_ONLOAD_HAPPENED=false;var addLoadEvent;window.onload=function(){HAS_ONLOAD_HAPPENED=true};addLoadEvent=function(script,params,post){if(typeof(script)=="function"){if(post){var oldOnload=window.onload;window.onload=function(){if(oldOnload){try{oldOnload();script()}catch(ex){}}else{window.onload=script}}}else{$(document).ready(function(){script()})}}else{if(typeof(script)=="string"){var attachScript=function(){var head0=document.getElementsByTagName("body")[0];var elScript=document.createElement("script");var isLoaded=false;elScript.type="text/javascript";elScript.language="javascript";elScript.src=("/res/scriptcalls."+script+".pack.js");params=(params?params:null);if(params){$(elScript).attr("id",("jsAtt-"+script)).attr("data-params",params)}$(elScript).one("load",function(){isLoaded=true});$(elScript).load();while(!isLoaded){if($(elScript).prop("complete")){isLoaded=true}}head0.appendChild(elScript)};if(post){addLoadEvent(function(){attachScript()})}else{attachScript()}}else{try{eval(script)}catch(ex){}}}if(HAS_ONLOAD_HAPPENED){window.onload()}};
+var CSSS_NOJS='nojs';
+var TOUT_LOAD=200;
+var TMRT_ANIM=360;
+var $trim;
+//INIT: ALLOC
+try{preload(['favicon.ico']);}catch(ex){ ;}
+//EXT: JQUERY
+$trim=$.trim;
+$.trim=(function(str){return ($trim(str).replace(/\s{2,}/g, ' '));});
+//TRIGGER
+window.addLoadEvent('main1', null, true);
+//]]></script>
+<ui:insert name="cph_PostLoadScripts"></ui:insert>
+</body>
+</html>
+

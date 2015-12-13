@@ -1,0 +1,141 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		    xmlns:h="http://java.sun.com/jsf/html"
+		    template="./../WEB-INF/abstracts/tplStudents2.xhtml">
+<ui:define name="cph_Title">Welcome</ui:define>
+
+
+<ui:define name="cph_Heading">Dashboard</ui:define>
+
+
+<ui:define name="cph_Content">
+<ul id="updateList1" class="event_tab menu nav">
+<li class="heading">Upcoming Events</li>
+<ui:repeat value="#{controllerFetchEvents.lstUpcomingEvents}" var="event">
+<li>
+    <span class="attribute">
+	<a href="Event.xhtml?event_id=#{event.PID}" class="title">#{event.title}</a>
+	<h:outputText value="#{event.description}"/>
+    </span>
+    <span class="attribute"><span class="bold">Begin : </span> <h:outputText value="#{event.EBegin}"/></span>
+    <span class="attribute"><span class="bold">End : </span> <h:outputText value="#{event.EEnd}"/></span>
+    <span class="attribute"><span class="bold">Held by : </span> <h:outputText value="#{event.department.name}"/></span>
+    <span class="attribute"><span class="bold">Held at : </span> <h:outputText value="#{event.venue.title}"/></span>
+    <span class="attribute">
+    <span class="bold">Students attending the Event : </span><br />
+    <ui:repeat value="#{event.studentList}" var="student">
+	<span>#{student.FName} #{student.FName} (#{student.auth.username})</span><br />
+    </ui:repeat>
+    <span class="bold">Total</span><h:outputText value=" #{event.studentList.size()}"></h:outputText>
+    </span>
+    <span class="attribute"><span class="bold">No. of Comments : </span> <h:outputText value="#{event.comments.size()}"/></span>
+    <span class="attribute"><span class="bold">Are you going? : </span> <h:selectBooleanCheckbox accesskey="#{event.PID}" class='chkIsGoing' value="#{event.studentList.contains(controllerFetchEvents.currStudent)}"></h:selectBooleanCheckbox></span>
+</li>
+</ui:repeat>
+</ul>
+<ul id="updateList2" class="event_tab menu nav">
+<li class="heading">Events Attending / Attended</li>
+<ui:repeat value="#{controllerFetchEvents.lstAttendingEvents}" var="event">
+<li>
+    <span class="attribute">
+	<a href="Event.xhtml?event_id=#{event.PID}" class="title">#{event.title}</a>
+	<h:outputText value="#{event.description}"/>
+    </span>
+    <span class="attribute"><span class="bold">Begin : </span> <h:outputText value="#{event.EBegin}"/></span>
+    <span class="attribute"><span class="bold">End : </span> <h:outputText value="#{event.EEnd}"/></span>
+    <span class="attribute"><span class="bold">Held by : </span> <h:outputText value="#{event.department.name}"/></span>
+    <span class="attribute"><span class="bold">Held at : </span> <h:outputText value="#{event.venue.title}"/></span>
+    <span class="attribute">
+    <span class="bold">Students attending the Event : </span><br />
+    <ui:repeat value="#{event.studentList}" var="student">
+	<span>#{student.FName} #{student.FName} (#{student.auth.username})</span><br />
+    </ui:repeat>
+    <span class="bold">Total</span><h:outputText value=" #{event.studentList.size()}"></h:outputText>
+    </span>
+    <span class="attribute"><span class="bold">No. of Comments : </span> <h:outputText value="#{event.comments.size()}"/></span>
+    <span class="attribute"><span class="bold">Are you going? : </span> <h:selectBooleanCheckbox disabled="#{not event.rawEBegin.after(now)}" accesskey="#{event.PID}" class='chkIsGoing' value="#{event.studentList.contains(controllerFetchEvents.currStudent)}"></h:selectBooleanCheckbox></span>
+</li>
+</ui:repeat>
+</ul>
+<ul id="updateList3" class="event_tab menu nav">
+<li class="heading">Past Events</li>
+<ui:repeat value="#{controllerFetchEvents.lstPastEvents}" var="event">
+<li>
+    <span class="attribute">
+	<a href="Event.xhtml?event_id=#{event.PID}" class="title">#{event.title}</a>
+	<h:outputText value="#{event.description}"/>
+    </span>
+    <span class="attribute"><span class="bold">Begin : </span> <h:outputText value="#{event.EBegin}"/></span>
+    <span class="attribute"><span class="bold">End : </span> <h:outputText value="#{event.EEnd}"/></span>
+    <span class="attribute"><span class="bold">Held by : </span> <h:outputText value="#{event.department.name}"/></span>
+    <span class="attribute"><span class="bold">Held at : </span> <h:outputText value="#{event.venue.title}"/></span>
+    <span class="attribute">
+    <span class="bold">Students attending the Event : </span><br />
+    <ui:repeat value="#{event.studentList}" var="student">
+	<span>#{student.FName} #{student.FName} (#{student.auth.username})</span><br />
+    </ui:repeat>
+    <span class="bold">Total</span><h:outputText value=" #{event.studentList.size()}"></h:outputText>
+    </span>
+    <span class="attribute"><span class="bold">No. of Comments : </span> <h:outputText value="#{event.comments.size()}"/></span>
+    <span class="attribute"><span class="bold">Are you going? : </span> <h:selectBooleanCheckbox disabled="#{not event.rawEBegin.after(now)}" accesskey="#{event.PID}" class='chkIsGoing' value="#{event.studentList.contains(controllerFetchEvents.currStudent)}"></h:selectBooleanCheckbox></span>
+</li>
+</ui:repeat>
+</ul>
+<ul id="updateList4" class="event_tab menu nav">
+<li class="heading">Events with most participants</li>
+<ui:repeat value="#{controllerFetchEvents.lstTopActiveEvents}" var="event">
+<li>
+    <span class="attribute">
+	<a href="Event.xhtml?event_id=#{event.PID}" class="title">#{event.title}</a>
+	<h:outputText value="#{event.description}"/>
+    </span>
+    <span class="attribute"><span class="bold">Begin : </span> <h:outputText value="#{event.EBegin}"/></span>
+    <span class="attribute"><span class="bold">End : </span> <h:outputText value="#{event.EEnd}"/></span>
+    <span class="attribute"><span class="bold">Held by : </span> <h:outputText value="#{event.department.name}"/></span>
+    <span class="attribute"><span class="bold">Held at : </span> <h:outputText value="#{event.venue.title}"/></span>
+    <span class="attribute">
+    <span class="bold">Students attending the Event : </span><br />
+    <ui:repeat value="#{event.studentList}" var="student">
+	<span>#{student.FName} #{student.FName} (#{student.auth.username})</span><br />
+    </ui:repeat>
+    <span class="bold">Total</span><h:outputText value=" #{event.studentList.size()}"></h:outputText>
+    </span>
+    <span class="attribute"><span class="bold">No. of Comments : </span> <h:outputText value="#{event.comments.size()}"/></span>
+    <span class="attribute"><span class="bold">Are you going? : </span> <h:selectBooleanCheckbox disabled="#{not event.rawEBegin.after(now)}" accesskey="#{event.PID}" class='chkIsGoing' value="#{event.studentList.contains(controllerFetchEvents.currStudent)}"></h:selectBooleanCheckbox></span>
+</li>
+</ui:repeat>
+</ul>
+</ui:define>
+
+<ui:define name="cph_PostLoadScripts">
+<h:outputScript>//<![CDATA[
+$(document).ready(function(){
+    var refreshPanels=function(){
+	$('ul.event_tab.menu').each(function(){
+	     $(this).show(0);
+	     if($(this).children('li').length==1) $(this).hide(0);
+	});
+    }
+   $(document).on('change', 'input.chkIsGoing', function(){
+		    $.get(('ajax/register_for_event?id='+ $(this).attr('accesskey')),
+			    function(){
+				    $('ul#updateList1').load('Events.xhtml #updateList1 li',
+					function(){
+					    $('ul#updateList2').load('Events.xhtml #updateList2 li',
+						   function(){
+							$('ul#updateList3').load('Events.xhtml #updateList3 li',
+							    function(){
+								$('ul#updateList4').load('Events.xhtml #updateList4 li',
+								    function(){
+									refreshPanels();
+									});
+							    });
+						   });
+						});
+				});
+			});
+    refreshPanels();
+});
+//]]></h:outputScript>
+</ui:define>
+</ui:composition>
+

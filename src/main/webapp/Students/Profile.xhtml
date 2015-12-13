@@ -1,0 +1,124 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		   xmlns:h="http://java.sun.com/jsf/html"
+		   xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+		   xmlns:f="http://java.sun.com/jsf/core"
+		    template="./../WEB-INF/abstracts/tplStudents2.xhtml">
+<ui:define name="cph_Title">Profile</ui:define>
+
+<ui:define name="cph_Heading">Manage Profile</ui:define>
+
+<ui:define name="cph_Content">
+<h:form id="x0">
+<table id="tblx">
+<tbody>
+    <tr><td style="border-top:1px solid #bbb;"></td></tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Unique ID</span> <span class="red">*</span><br />
+	    <h:outputLabel value="#{controllerProcessStudentProfile.strStudent_Number}"></h:outputLabel>
+	    </label>
+	</td>
+    </tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Email ID</span> <span class="red">*</span><br />
+	    <h:outputLink value="mailto:#{controllerProcessStudentProfile.strEmailID}" target="_blank">#{controllerProcessStudentProfile.strEmailID}</h:outputLink>
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">First Name</span> <span class="red">*</span><br />
+	    <h:inputText id="txtFName" title="Enter First Name" p:placeholder="Enter First Name" maxlength="155" alt="1" value="#{controllerProcessStudentProfile.strFName}" />
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Last Name</span> <span class="red">*</span><br />
+	    <h:inputText id="txtLName" title="Enter Last Name" p:placeholder="Enter Last Name" maxlength="155" alt="1" value="#{controllerProcessStudentProfile.strLName}" />
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Gender</span> <span class="red">*</span><br />
+	    <h:selectOneListbox title="Select Gender" p:placeholder="Select Gender" id="ddlGender" value="#{controllerProcessStudentProfile.chrGender}">
+		<f:selectItem itemValue="M" itemLabel="Male" />
+		<f:selectItem itemValue="F" itemLabel="Female" />
+	    </h:selectOneListbox>
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Phone Number</span> <span class="red">*</span><br />
+	    <h:inputText id="txtPhone" title="Enter Phone Number" p:placeholder="Enter Phone Number" maxlength="10" alt="6" size="10" value="#{controllerProcessStudentProfile.intPhone}" />
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Notify by Email</span><br />
+	    <h:selectBooleanCheckbox value="#{controllerProcessStudentProfile.blnNotifyEvents}"></h:selectBooleanCheckbox>
+	    </label>
+	</td>
+    </tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Change Password</span><br />
+	    <h:selectBooleanCheckbox id="chkChangePwd" value="#{controllerProcessStudentProfile.blnChangePwd}"></h:selectBooleanCheckbox><br />
+	    <h:inputSecret id="txtNewPassword" title="Enter New Password" p:placeholder="Enter New Password" maxlength="155" alt="1" size="6" value="#{controllerProcessStudentProfile.strNewPassword}" /><br /><br />
+	    <h:inputSecret id="txtNewPasswordConfirm" title="Confirm New Password" p:placeholder="Confirm New Password" maxlength="155" alt="1" size="6" />
+	    </label>
+	</td>
+    </tr>
+    <tr><td style="border-bottom:1px solid #bbb;"></td></tr>
+    <tr><input name="frmChk" type="hidden" value="0" />
+	<td style="color:#bbb;">
+	    <h:commandButton action="#{controllerProcessStudentProfile.updateProfile()}" value="update" style="margin-left:0;padding-left:0;" /> | <input type="reset" id="reset" value="clear" />
+	</td>
+    </tr>
+</tbody>
+</table>
+</h:form>  
+</ui:define>
+
+<ui:define name="cph_PostLoadScripts">
+<h:outputScript>//<![CDATA[
+var x=document.forms[0];
+try{fncFrmLoad(x);
+    var validate=function(x){
+	var t=fncValidateFrm(x);
+	    if(t){
+		if($(document.getElementById('x0:txtNewPassword')).val()!=$(document.getElementById('x0:txtNewPasswordConfirm')).val()){
+		    $(document.getElementById('x0:txtNewPasswordConfirm')).focus();
+		    $(document.getElementById('x0:txtNewPasswordConfirm')).addClass('redline');
+		    $('div#msgBox').text('New Passwords must match.');
+		    t=false;
+		}else $(document.getElementById('x0:txtNewPasswordConfirm')).removeClass('redline');
+	    }
+	    return t;
+	};
+    x.onsubmit=function(){
+	var t=validate(this);
+	if(!t) return false;
+	//if(t) x.submit();
+	//return false;
+    };
+}catch(e){alert(e);}
+$(document).ready(function(){
+    $(document.getElementById('x0:chkChangePwd')).change(function(){
+				$(document.getElementById('x0:txtNewPassword')).attr('readonly', true).val(null).attr('alt', null);
+				$(document.getElementById('x0:txtNewPasswordConfirm')).attr('readonly', true).val(null).attr('alt', null);
+				if($(this).is(':checked')){
+				    $(document.getElementById('x0:txtNewPassword')).attr('readonly', false).attr('alt', 1);
+				    $(document.getElementById('x0:txtNewPasswordConfirm')).attr('readonly', false).attr('alt', 1);
+				}
+
+			    }).change();
+});
+//]]></h:outputScript>
+</ui:define>
+</ui:composition>
+

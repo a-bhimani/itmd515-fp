@@ -1,0 +1,87 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		    xmlns:h="http://java.sun.com/jsf/html"
+		    template="./../../WEB-INF/abstracts/tplSuperAdmin3.xhtml">
+<ui:define name="cph_Title">Welcome</ui:define>
+
+
+<ui:define name="cph_PageStyles">
+<style type="text/css" media="all">
+ul.event_tab.menu{width:45%;}
+</style>
+</ui:define>
+
+
+<ui:define name="cph_Heading">Dashboard</ui:define>
+
+
+<ui:define name="cph_Content">
+<ul id="updateList1" class="event_tab menu nav">
+<li class="heading">Administrators</li>
+<ui:repeat value="#{controllerFetchUsers.lstAdministrators}" var="authentication">
+<li>
+    <span class="attribute">
+	<a href="#" class="title">#{authentication.username}</a>
+	<a href="#" onclick="javascript:return confirm_delete();" accesskey="#{authentication.ID}" class="action admin_delete right text-right"><img style="cursor:pointer;border:0 none;" src="/res/img.icon.delete.png" title="delete" alt="delete" /></a>	
+    </span>
+    <span class="attribute"><span class="bold">Role : </span> 
+	<ui:repeat value="#{authentication.roles}" var="role">
+	    <h:outputText value="#{role.name}"/>
+	</ui:repeat>
+    </span>
+</li>
+</ui:repeat>
+<li></li>
+<li class="right"><a href="Add_Administrator.xhtml">Add New</a></li>
+</ul>
+
+<ul id="updateList2" class="event_tab menu nav">
+<li class="heading">Students</li>
+<ui:repeat value="#{controllerFetchUsers.lstStudents}" var="student">
+<li>
+    <span class="attribute">
+	<a title="Edit Note" href="Student_Note.xhtml?student_id=#{student.PID}" class="title">#{student.FName} #{student.LName} (#{student.auth.username})</a>
+	<a title="Edit Note" href="Student_Note.xhtml?student_id=#{student.PID}" class="action right text-right"><img style="cursor:pointer;border:0 none;" src="/res/img.icon.edit.png" title="Edit Note" alt="edit" /></a>
+    </span>
+    <span class="attribute"><span class="bold">Unique Student Number : </span> <h:outputText value="#{student.student_Number}"/></span>
+    <span class="attribute"><span class="bold">Gender : </span> <h:outputText value="#{student.gender}"/></span>
+    <span class="attribute"><span class="bold">Email ID : </span> <h:outputLink value="#{student.emailID}">#{student.emailID}</h:outputLink></span>
+    <span class="attribute"><span class="bold">Phone : </span> <h:outputText value="#{student.phone==0 ? '-': student.phone}"/></span>
+    <span class="attribute">
+	<span class="bold">Events : </span><h:outputText value="0" rendered="#{student.eventList.size() eq 0}" /><br />
+    <ui:repeat value="#{student.eventList}" var="event">
+	<span>- #{event.title} (#{event.venue.title})</span><br />
+    </ui:repeat>
+    <span class="bold">Total </span><h:outputText value=" #{student.eventList.size()}"></h:outputText>
+    </span>
+    <span class="attribute"><span class="bold">Notify for Events : </span> <h:outputText value="#{student.notifyEvents}"/></span>
+    <span class="attribute"><span class="bold">Comments : </span> <h:outputText value="#{student.comments.size()}"/></span>
+    <span class="attribute"><span class="bold">Remarks : </span> <h:outputText value="#{student.special}"/></span>    
+</li>
+</ui:repeat>
+<li></li>
+<li class="right"><a href="Student_Profile.xhtml">Add New</a></li>
+</ul>
+</ui:define>
+
+<ui:define name="cph_PostLoadScripts">
+<h:outputScript>//<![CDATA[
+$(document).ready(function(){
+var refreshPanels=function(){
+	$('ul.event_tab.menu').each(function(){
+	     $(this).show(0);
+	     if($(this).children('li').length==1) $(this).hide(0);
+	});
+    }
+    $('a.admin_delete').click(function(){
+			    $.get('ajax/delete_admin?id='+ $(this).attr('accesskey'), function(){
+												$('ul#updateList1').load('Welcome.xhtml #updateList1 li',
+												    function(){
+													refreshPanels();
+													});
+											});
+				});
+		    });
+//]]></h:outputScript>
+</ui:define>
+</ui:composition>
+

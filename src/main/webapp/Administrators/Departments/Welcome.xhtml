@@ -1,0 +1,172 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		    xmlns:h="http://java.sun.com/jsf/html"
+		    template="./../../WEB-INF/abstracts/tplAdmin2.xhtml">
+<ui:define name="cph_Title">Welcome</ui:define>
+
+
+<ui:define name="cph_PageStyles">
+<style type="text/css" media="all">
+ul.event_tab.menu{width:16%;}
+</style>
+</ui:define>
+
+
+<ui:define name="cph_Heading">Dashboard</ui:define>
+
+
+<ui:define name="cph_Content">
+<ul id="updateList1" class="event_tab menu nav">
+<li class="heading">Departments</li>
+<ui:repeat value="#{controllerFetchDepartmentData.lstDepartments}" var="department">
+<li>
+    <span class="attribute">
+	<a href="Manage_Department.xhtml?department_id=#{department.ID}" class="title">#{department.name}</a>
+	<a title="Edit" href="Manage_Department.xhtml?department_id=#{department.ID}" class="action right text-right"><img style="cursor:pointer;border:0 none;" src="/res/img.icon.edit.png" title="Edit" alt="edit" /></a>
+    </span>
+    <span class="attribute"><span class="bold">Description : </span> 
+	<h:outputLabel value="#{department.description}"></h:outputLabel>
+    </span>
+    <span class="attribute"><span class="bold">Events : </span> <h:outputText value="#{department.departmentEvents.size()}"/></span>
+</li>
+</ui:repeat>
+<li></li>
+<li class="right"><a href="Manage_Department.xhtml">Add New</a></li>
+</ul>
+
+<ul id="updateList2" class="event_tab menu nav">
+<li class="heading">New Events</li>
+<ui:repeat value="#{controllerFetchDepartmentData.lstPendingEvents}" var="event">
+<li>
+    <span class="attribute">
+	<a href="Manage_Event.xhtml?event_id=#{event.ID}" class="title">#{event.title}</a>
+	<a title="Edit" href="Manage_Event.xhtml?event_id=#{event.ID}" class="action right text-right"><img style="cursor:pointer;border:0 none;" src="/res/img.icon.edit.png" title="Edit" alt="edit" /></a>
+	<h:outputText value="#{event.description}"/>
+    </span>
+    <span class="attribute"><span class="bold">Begin : </span> <h:outputText value="#{event.EBegin}"/></span>
+    <span class="attribute"><span class="bold">End : </span> <h:outputText value="#{event.EEnd}"/></span>
+    <span class="attribute"><span class="bold">Held by : </span> <h:outputText value="#{event.department.name}"/></span>
+    <span class="attribute"><span class="bold">Held at : </span> <h:outputText value="#{event.venue.title}"/></span>
+    <span class="attribute">
+    <span class="bold">Students attending the Event : </span><br />
+    <ui:repeat value="#{event.studentList}" var="student">
+	<span>#{student.FName} #{student.FName} (#{student.auth.username})</span><br />
+    </ui:repeat>
+    <span class="bold">Total</span><h:outputText value=" #{event.studentList.size()}"></h:outputText>
+    </span>
+    <span class="attribute"><span class="bold">No. of Comments : </span> <h:outputText value="#{event.comments.size()}"/></span>
+    <span class="attribute"><a title="Delete" accesskey="#{event.ID}" class="action delete"><img style="cursor:pointer;border:0 none;" src="/res/img.icon.delete.png" title="Delete" alt="Delete" /></a></span>
+</li>
+</ui:repeat>
+<li class="right"><a href="Manage_Event.xhtml">Add New</a></li>
+</ul>
+    
+<ul id="updateList3" class="event_tab menu nav">
+<li class="heading">Approved Events</li>
+<ui:repeat value="#{controllerFetchDepartmentData.lstActiveEvents}" var="event">
+<li>
+    <span class="attribute">
+	<a href="Manage_Event.xhtml?event_id=#{event.ID}" class="title">#{event.title}</a>
+	<a title="Edit" href="Manage_Event.xhtml?event_id=#{event.ID}" class="action right text-right"><img style="cursor:pointer;border:0 none;" src="/res/img.icon.edit.png" title="Edit" alt="edit" /></a>
+	<h:outputText value="#{event.description}"/>
+    </span>
+    <span class="attribute"><span class="bold">Begin : </span> <h:outputText value="#{event.EBegin}"/></span>
+    <span class="attribute"><span class="bold">End : </span> <h:outputText value="#{event.EEnd}"/></span>
+    <span class="attribute"><span class="bold">Held by : </span> <h:outputText value="#{event.department.name}"/></span>
+    <span class="attribute"><span class="bold">Held at : </span> <h:outputText value="#{event.venue.title}"/></span>
+    <span class="attribute">
+    <span class="bold">Students attending the Event : </span><br />
+    <ui:repeat value="#{event.studentList}" var="student">
+	<span>#{student.FName} #{student.FName} (#{student.auth.username})</span><br />
+    </ui:repeat>
+    <span class="bold">Total</span><h:outputText value=" #{event.studentList.size()}"></h:outputText>
+    </span>
+    <span class="attribute"><span class="bold">No. of Comments : </span> <h:outputText value="#{event.comments.size()}"/></span>
+    <span class="attribute"><a title="Delete" accesskey="#{event.ID}" class="action delete"><img style="cursor:pointer;border:0 none;" src="/res/img.icon.delete.png" title="Delete" alt="Delete" /></a></span>
+</li>
+</ui:repeat>
+<li class="right"><a href="Manage_Event.xhtml">Add New</a></li>
+</ul>
+    
+<ul id="updateList4" class="event_tab menu nav">
+<li class="heading">Declined Events</li>
+<ui:repeat value="#{controllerFetchDepartmentData.lstDeclinedEvents}" var="event">
+<li>
+    <span class="attribute">
+	<a href="#" class="title">#{event.title}</a>
+	<h:outputText value="#{event.description}"/>
+    </span>
+    <span class="attribute"><span class="bold">Begin : </span> <h:outputText value="#{event.EBegin}"/></span>
+    <span class="attribute"><span class="bold">End : </span> <h:outputText value="#{event.EEnd}"/></span>
+    <span class="attribute"><span class="bold">Held by : </span> <h:outputText value="#{event.department.name}"/></span>
+    <span class="attribute"><span class="bold">Held at : </span> <h:outputText value="#{event.venue.title}"/></span>
+    <span class="attribute">
+    <span class="bold">Students attending the Event : </span><br />
+    <ui:repeat value="#{event.studentList}" var="student">
+	<span>#{student.FName} #{student.FName} (#{student.auth.username})</span><br />
+    </ui:repeat>
+    <span class="bold">Total</span><h:outputText value=" #{event.studentList.size()}"></h:outputText>
+    </span>
+    <span class="attribute"><span class="bold">No. of Comments : </span> <h:outputText value="#{event.comments.size()}"/></span>
+</li>
+</ui:repeat>
+</ul>
+    
+<ul id="updateList5" class="event_tab menu nav">
+<li class="heading">Cancelled Events</li>
+<ui:repeat value="#{controllerFetchDepartmentData.lstCancelledEvents}" var="event">
+<li>
+    <span class="attribute">
+	<a href="#" class="title">#{event.title}</a>
+	<h:outputText value="#{event.description}"/>
+    </span>
+    <span class="attribute"><span class="bold">Begin : </span> <h:outputText value="#{event.EBegin}"/></span>
+    <span class="attribute"><span class="bold">End : </span> <h:outputText value="#{event.EEnd}"/></span>
+    <span class="attribute"><span class="bold">Held by : </span> <h:outputText value="#{event.department.name}"/></span>
+    <span class="attribute"><span class="bold">Held at : </span> <h:outputText value="#{event.venue.title}"/></span>
+    <span class="attribute">
+    <span class="bold">Students attending the Event : </span><br />
+    <ui:repeat value="#{event.studentList}" var="student">
+	<span>#{student.FName} #{student.FName} (#{student.auth.username})</span><br />
+    </ui:repeat>
+    <span class="bold">Total</span><h:outputText value=" #{event.studentList.size()}"></h:outputText>
+    </span>
+    <span class="attribute"><span class="bold">No. of Comments : </span> <h:outputText value="#{event.comments.size()}"/></span>
+</li>
+</ui:repeat>
+</ul>
+</ui:define>
+
+<ui:define name="cph_PostLoadScripts">
+<h:outputScript>//<![CDATA[
+$(document).ready(function(){
+var refreshPanels=function(){
+	$('ul.event_tab.menu').each(function(){
+	     $(this).show(0);
+	     if($(this).children('li').length==1) $(this).hide(0);
+	});
+    }
+    $(document).on('click', 'a.delete.action', function(){
+			    if(confirm_delete()){
+			    $.get('ajax/cancel_event?id='+ $(this).attr('accesskey'), function(){
+								$('ul#updateList2').load('Welcome.xhtml #updateList2 li',
+									function(){
+									    $('ul#updateList3').load('Welcome.xhtml #updateList3 li',
+										   function(){
+											$('ul#updateList4').load('Welcome.xhtml #updateList4 li',
+											    function(){
+												$('ul#updateList5').load('Welcome.xhtml #updateList5 li',
+												    function(){
+													refreshPanels();
+													});
+											    });
+										   });
+										});
+							});
+							}
+				});
+	    refreshPanels();
+	});
+//]]></h:outputScript>
+</ui:define>
+</ui:composition>
+

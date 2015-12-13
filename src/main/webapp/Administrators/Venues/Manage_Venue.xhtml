@@ -1,0 +1,72 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		   xmlns:h="http://java.sun.com/jsf/html"
+		   xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+		   xmlns:f="http://java.sun.com/jsf/core"
+		    template="./../../WEB-INF/abstracts/tplAdmin2.xhtml">
+<ui:define name="cph_Title">New Venue</ui:define>
+
+<ui:define name="cph_Heading">#{empty request.getParameter("venue_id")? 'Create': 'Update'} Venue</ui:define>
+
+<ui:define name="cph_Content">
+<h:form id="x0">
+    <f:metadata>
+	<f:viewParam name="venue_id" value="#{controllerProcessVenue.venue_id}" />
+	<f:viewAction action="#{controllerProcessVenue.pre_load}" />
+    </f:metadata>
+<table id="tblx">
+<tbody>
+    <tr><td style="border-top:1px solid #bbb;"></td></tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Title</span> <span class="red">*</span><br />
+	     <h:inputText id="txtTitle" title="Enter Title" p:placeholder="Enter Title" maxlength="155" alt="1" value="#{controllerProcessVenue.strTitle}" />
+	    </label>
+	</td>
+    </tr>
+    <tr>
+	<td><label>
+	    <span class="bold">Address</span> <span class="red">*</span><br />
+	     <h:inputText id="txtAddr1" title="Enter Address 1" p:placeholder="Enter Address 1" maxlength="155" alt="1" value="#{controllerProcessVenue.strAddr1}" /><br /><br />
+	     <h:inputText id="txtAddr2" title="Enter Address 2" p:placeholder="Enter Address 2" maxlength="155" value="#{controllerProcessVenue.strAddr2}" /><br /><br />
+	     <h:inputText id="txtCity" title="Enter City" p:placeholder="Enter City" maxlength="155" size="3" alt="1" value="#{controllerProcessVenue.strCity}" /><br /><br />
+	     <h:inputText id="txtZip" title="Enter Zip" p:placeholder="Enter Zip" maxlength="5" alt="7" value="#{controllerProcessVenue.strZip}" /><br /><br />
+	     <h:inputText id="txtZipExt" title="Enter Zip Ext" p:placeholder="Enter Zip Ext" maxlength="4" alt="numeric" value="#{controllerProcessVenue.strZipExt}" /><br />
+	    </label>
+	</td>
+    </tr>
+    <tr><td style="border-bottom:1px solid #bbb;"></td></tr>
+    <tr><input name="frmChk" type="hidden" value="0" />
+	<td style="color:#bbb;">
+	    <h:commandButton action="#{controllerProcessVenue.manipulateVenue()}" value="save" style="margin-left:0;padding-left:0;" /> | <input type="reset" id="reset" value="clear" />
+	</td>
+    </tr>
+</tbody>
+</table>
+</h:form>  
+</ui:define>
+
+<ui:define name="cph_PostLoadScripts">
+<h:outputScript>//<![CDATA[
+var x=document.forms[0];
+try{fncFrmLoad(x);
+    var validate=function(x){
+	var t=fncValidateFrm(x);
+	    if(t){
+		
+	    }
+	    return t;
+	};
+    x.onsubmit=function(){
+	var t=validate(this);
+	if(!t) return false;
+	//if(t) x.submit();
+	//return false;
+    };
+}catch(e){alert(e);}
+$(document).ready(function(){
+   
+});
+//]]></h:outputScript>
+</ui:define>
+</ui:composition>
+

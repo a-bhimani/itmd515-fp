@@ -1,0 +1,82 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		   xmlns:h="http://java.sun.com/jsf/html"
+		   xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+		   xmlns:f="http://java.sun.com/jsf/core"
+		    template="./../../WEB-INF/abstracts/tplSuperAdmin3.xhtml">
+<ui:define name="cph_Title">New Administrator</ui:define>
+
+<ui:define name="cph_Heading">Create Administrator</ui:define>
+
+<ui:define name="cph_Content">
+<h:form id="x0">
+<table id="tblx">
+<tbody>
+    <tr><td style="border-top:1px solid #bbb;"></td></tr>
+     <tr><th style="border-bottom:1px solid #bbb;">Credentials</th></tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Username</span> <span class="red">*</span><br />
+	     <h:inputText id="txtUsername" title="Enter Username" p:placeholder="Enter Username" maxlength="155" alt="1" value="#{controllerProcessUsers.strUsername}" />
+	    </label>
+	</td>
+    </tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Role</span> <span class="red">*</span><br />
+	     <h:selectOneListbox title="Select Gender" p:placeholder="Select Role" id="ddlRole" value="#{controllerProcessUsers.intRole}">
+		 <f:selectItem itemValue="0" itemLabel="SUPER_ADMIN" />
+		<f:selectItem itemValue="1" itemLabel="DEPT_ADMIN" />
+		<f:selectItem itemValue="2" itemLabel="VENUE_ADMIN" />
+	    </h:selectOneListbox>
+	    </label>
+	</td>
+    </tr>
+     <tr>
+	<td><label>
+	    <span class="bold">Password</span> <span class="red">*</span><br />
+	    <h:inputSecret id="txtNewPassword" title="Enter New Password" p:placeholder="Enter New Password" maxlength="155" alt="1" size="6" value="#{controllerProcessUsers.strNewPassword}" /><br /><br />
+	    <h:inputSecret id="txtNewPasswordConfirm" title="Confirm New Password" p:placeholder="Confirm New Password" maxlength="155" alt="1" size="6" />
+	    </label>
+	</td>
+    </tr>
+    <tr><td style="border-bottom:1px solid #bbb;"></td></tr>
+    <tr><input name="frmChk" type="hidden" value="0" />
+	<td style="color:#bbb;">
+	    <h:commandButton action="#{controllerProcessUsers.createAdministrator()}" value="create" style="margin-left:0;padding-left:0;" /> | <input type="reset" id="reset" value="clear" />
+	</td>
+    </tr>
+</tbody>
+</table>
+</h:form>  
+</ui:define>
+
+<ui:define name="cph_PostLoadScripts">
+<h:outputScript>//<![CDATA[
+var x=document.forms[0];
+try{fncFrmLoad(x);
+    var validate=function(x){
+	var t=fncValidateFrm(x);
+	    if(t){
+		if($(document.getElementById('x0:txtNewPassword')).val()!=$(document.getElementById('x0:txtNewPasswordConfirm')).val()){
+		    $(document.getElementById('x0:txtNewPasswordConfirm')).focus();
+		    $(document.getElementById('x0:txtNewPasswordConfirm')).addClass('redline');
+		    $('div#msgBox').text('New Passwords must match.');
+		    t=false;
+		}else $(document.getElementById('x0:txtNewPasswordConfirm')).removeClass('redline');
+	    }
+	    return t;
+	};
+    x.onsubmit=function(){
+	var t=validate(this);
+	if(!t) return false;
+	//if(t) x.submit();
+	//return false;
+    };
+}catch(e){alert(e);}
+$(document).ready(function(){
+   
+});
+//]]></h:outputScript>
+</ui:define>
+</ui:composition>
+
